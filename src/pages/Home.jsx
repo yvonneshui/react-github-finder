@@ -1,4 +1,4 @@
-import UserResults from "../components/layout/users/UserResults"
+import UserResults from '../components/users/UserResults'
 function Home() {
 	return (
 		<div>
