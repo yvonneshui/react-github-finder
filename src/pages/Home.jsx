@@ -1,8 +1,9 @@
-
+import UserResults from "../components/layout/users/UserResults"
 function Home() {
 	return (
 		<div>
-			<h1 className="text-6xl"></h1>
+			{/*search components will be here*/}
+			<UserResults />
 		</div>
 	)
 }
