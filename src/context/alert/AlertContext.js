@@ -9,10 +9,10 @@ export const AlertProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AlertReducer, initialState); //dispatch sends the actions to the reducer and then makes changes to the state
 
   //Set an alert
-  const setAlert = (msg, type) => {
+  const setAlert = (msg, errType) => {
     dispatch({
       type: "SET_ALERT",
-      payload: { msg, type },
+      payload: { msg, errType },
     });
 
     setTimeout(() => dispatch({ type: "REMOVE_ALERT" }), 3000);
