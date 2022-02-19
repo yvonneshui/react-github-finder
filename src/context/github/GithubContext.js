@@ -7,6 +7,7 @@ export const GithubProvider = ({ children }) => {
   const initialState = {
     users: [],
     user: {},
+    repos: [],
     loading: false,
   };
 
@@ -46,6 +47,30 @@ export const GithubProvider = ({ children }) => {
     }
   };
 
+  //Get user's repo
+  const getUserRepos = async (login) => {
+    setLoading();
+
+    const params = new URLSearchParams({
+      sort: "created",
+      per_page: 10,
+    });
+
+    const res = await fetch(
+      `https://api.github.com/users/${login}/repos?${params}`
+    );
+
+    if (res.status === 404) {
+      window.location = "./notfound";
+    } else {
+      const data = await res.json();
+      dispatch({
+        type: "GET_USER_REPO",
+        payload: data,
+      });
+    }
+  };
+
   const clearUsers = () => {
     dispatch({
       type: "CLEAR_USERS",
@@ -63,9 +88,11 @@ export const GithubProvider = ({ children }) => {
         users: state.users,
         user: state.user,
         loading: state.loading,
+        repos: state.repos,
         searchUsers,
         clearUsers,
         getUser,
+        getUserRepos,
       }}
     >
       {children}
