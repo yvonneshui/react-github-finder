@@ -13,58 +13,6 @@ export const GithubProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(githubReducer, initialState);
 
-  //get single user
-  const getUser = async (login) => {
-    setLoading();
-
-    const res = await fetch(`https://api.github.com/users/${login}`);
-
-    if (res.status === 404) {
-      window.location = "./notfound";
-    } else {
-      const data = await res.json();
-      dispatch({
-        type: "GET_USER",
-        payload: data,
-      });
-    }
-  };
-
-  //Get user's repo
-  const getUserRepos = async (login) => {
-    setLoading();
-
-    const params = new URLSearchParams({
-      sort: "created",
-      per_page: 10,
-    });
-
-    const res = await fetch(
-      `https://api.github.com/users/${login}/repos?${params}`
-    );
-
-    if (res.status === 404) {
-      window.location = "./notfound";
-    } else {
-      const data = await res.json();
-      dispatch({
-        type: "GET_USER_REPO",
-        payload: data,
-      });
-    }
-  };
-
-  const clearUsers = () => {
-    dispatch({
-      type: "CLEAR_USERS",
-    });
-  };
-
-  const setLoading = () =>
-    dispatch({
-      type: "SET_LOADING",
-    });
-
   return (
     <GithubContext.Provider
       value={{
