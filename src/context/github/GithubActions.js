@@ -1,43 +1,26 @@
+import axios from "axios";
+
+const github = axios.create({
+  baseURL: "https://api.github.com",
+});
+
 //get users fit searching criteria
 export const searchUsers = async (text) => {
   const params = new URLSearchParams({
     q: text,
   });
 
-  const res = await fetch(`https://api.github.com/search/users?${params}`);
+  const res = await github.get(`/search/users?${params}`);
 
-  const { items } = await res.json();
-
-  return items;
+  return res.data.items;
 };
 
-//get single user
-export const getUser = async (login) => {
-  const res = await fetch(`https://api.github.com/users/${login}`);
+//get single user and their repos
+export const getUserAndRepos = async (login) => {
+  const [user, repos] = await Promise.all([
+    github.get(`/users/${login}`),
+    github.get(`/users/${login}/repos`),
+  ]);
 
-  if (res.status === 404) {
-    window.location = "./notfound";
-  } else {
-    const data = await res.json();
-
-    return data;
-  }
-};
-//Get user's repo
-export const getUserRepos = async (login) => {
-  const params = new URLSearchParams({
-    sort: "created",
-    per_page: 10,
-  });
-
-  const res = await fetch(
-    `https://api.github.com/users/${login}/repos?${params}`
-  );
-
-  if (res.status === 404) {
-    window.location = "./notfound";
-  } else {
-    const data = await res.json();
-    return data;
-  }
+  return { user: user.data, repos: repos.data };
 };
