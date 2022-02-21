@@ -1,6 +1,7 @@
 # Github Finder App
 
 App to search Github users and display their info. 
+Deployed here:https://distracted-neumann-3529c7.netlify.app/
 ## Usage
 
 Rename **_.env.example_** to **_.env_**
